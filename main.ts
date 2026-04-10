@@ -51,7 +51,7 @@ export default class GfmAnchorCompatPlugin extends Plugin
 {
 	private readonly documentIndexCache = new Map<string, Promise<DocumentIndex>>();
 
-	async onload(): Promise<void>
+	onload(): void
 	{
 		this.registerMarkdownPostProcessor(async (el, context) =>
 		{
