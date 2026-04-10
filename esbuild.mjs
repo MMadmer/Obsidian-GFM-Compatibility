@@ -8,9 +8,10 @@ const buildOptions = {
 	external: ["obsidian"],
 	format: "cjs",
 	logLevel: "info",
+	minify: !shouldWatch,
 	outfile: "main.js",
 	platform: "browser",
-	sourcemap: "inline",
+	sourcemap: shouldWatch ? "inline" : false,
 	target: "es2020"
 };
 
