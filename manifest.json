@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-gfm-compatibility",
+  "name": "GFM Compatibility",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "Adds GitHub style Markdown compatibility.",
+  "author": "Madmer",
+  "authorUrl": "https://github.com/MMadmer",
+  "isDesktopOnly": false
+}

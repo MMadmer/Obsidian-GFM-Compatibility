@@ -1,0 +1,36 @@
+{
+  "name": "obsidian-gfm-compatibility",
+  "version": "1.0.0",
+  "description": "Obsidian plugin that adds GitHub style Markdown compatibility.",
+  "main": "main.js",
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "dev": "node esbuild.mjs --watch"
+  },
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "markdown",
+    "gfm",
+    "anchors"
+  ],
+  "author": "Madmer",
+  "license": "MIT",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MMadmer/Obsidian-GFM-Compatibility.git"
+  },
+  "homepage": "https://github.com/MMadmer/Obsidian-GFM-Compatibility#readme",
+  "bugs": {
+    "url": "https://github.com/MMadmer/Obsidian-GFM-Compatibility/issues"
+  },
+  "dependencies": {
+    "obsidian": "^1.12.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.2"
+  }
+}

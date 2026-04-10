@@ -1,0 +1,11 @@
+.gfm-anchor-compat-link
+{
+	color: var(--link-color);
+	cursor: pointer;
+	text-decoration: var(--link-decoration);
+}
+
+.gfm-anchor-compat-link:hover
+{
+	color: var(--link-color-hover, var(--link-color));
+}
