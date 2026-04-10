@@ -1,28 +1,60 @@
 # GFM Compatibility
 
-Obsidian plugin that adds GitHub and VS Code style Markdown anchor compatibility.
+Use GitHub and VS Code style Markdown anchor links in Obsidian.
 
-## Features
+If you keep Markdown notes in a repo and jump between Obsidian, GitHub, and VS Code, this plugin makes their anchor links work the same way inside Obsidian.
 
-- Resolves same-note links like `[Section](#my-section)`.
-- Resolves cross-note links like `[Section](Note.md#my-section)`.
-- Supports duplicate heading slugs like `#my-section-1`.
-- Supports manual HTML anchors like `<a id="my-section"></a>`.
-- Uses Obsidian navigation APIs so links behave consistently in reading view and editor navigation.
+## What it fixes
 
-## Usage
+- Supports same-note anchor links such as `[Section](#my-section)`.
+- Supports cross-note anchor links such as `[Section](Other Note.md#my-section)`.
+- Supports duplicate heading slugs such as `#my-section-1`.
+- Supports manual HTML anchors such as `<a id="my-section"></a>`.
+- Works in reading view and when opening links from other notes.
 
-- Enable the plugin in Community Plugins.
-- Write standard Markdown links like `[Section](#my-section)` in the current note.
-- Write cross-note links like `[Section](Other Note.md#my-section)` for another note.
-- Keep using manual anchors like `<a id="my-section"></a>` if your docs already depend on them.
+## Installation
 
-## Privacy and disclosures
+### Community Plugins
 
-- No network requests.
-- No telemetry.
-- No ads or external account requirements.
-- Reads note metadata and Markdown contents from your vault only to resolve anchor targets.
+After the plugin is available in Community Plugins:
+
+1. Open `Settings -> Community plugins`.
+2. Disable `Restricted mode` if needed.
+3. Select `Browse` and search for `GFM Compatibility`.
+4. Install and enable the plugin.
+
+### Manual installation
+
+1. Download the latest release from GitHub.
+2. Create the folder `<your-vault>/.obsidian/plugins/gfm-compatibility/`.
+3. Copy `main.js`, `manifest.json`, and `styles.css` into that folder.
+4. Reload Obsidian and enable the plugin.
+
+## Examples
+
+Same note:
+
+```md
+[Role](#gdd-role)
+```
+
+Another note:
+
+```md
+[Controls](Design/Controls.md#movement-controls)
+```
+
+Manual HTML anchor:
+
+```md
+<a id="custom-anchor"></a>
+
+[Jump](#custom-anchor)
+```
+
+## Privacy
+
+This plugin does not send network requests, collect telemetry, show ads, or require an account. It only reads note metadata and Markdown contents from your vault to resolve anchor targets.
 
 ## Development
 
@@ -31,4 +63,4 @@ npm install
 npm run dev
 ```
 
-For local development, Obsidian only needs an up-to-date `main.js` in the plugin folder.
+Obsidian loads the plugin from the plugin folder, so local development only requires an up-to-date `main.js`.

@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag. Must match manifest.json version exactly."
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Resolve release metadata
+        shell: pwsh
+        run: |
+          $manifest = Get-Content manifest.json | ConvertFrom-Json
+          $tag = '${{ github.event.inputs.tag }}'
+
+          if ([string]::IsNullOrWhiteSpace($tag))
+          {
+          	$tag = '${{ github.ref_name }}'
+          }
+
+          if ([string]::IsNullOrWhiteSpace($tag))
+          {
+          	throw "Release tag is empty."
+          }
+
+          if ($tag -ne $manifest.version)
+          {
+          	throw "Release tag '$tag' must match manifest version '$($manifest.version)'."
+          }
+
+          "PLUGIN_ID=$($manifest.id)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "PLUGIN_VERSION=$($manifest.version)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "RELEASE_TAG=$tag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "RELEASE_ZIP_NAME=$($manifest.id)-$($manifest.version).zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Package release bundle
+        shell: pwsh
+        run: |
+          $releaseDir = Join-Path $PWD "release"
+
+          if (Test-Path $releaseDir)
+          {
+          	Remove-Item -LiteralPath $releaseDir -Recurse -Force
+          }
+
+          New-Item -ItemType Directory -Path $releaseDir | Out-Null
+          Copy-Item -LiteralPath @("main.js", "manifest.json", "styles.css") -Destination $releaseDir
+
+          $zipPath = Join-Path $PWD $env:RELEASE_ZIP_NAME
+
+          if (Test-Path $zipPath)
+          {
+          	Remove-Item -LiteralPath $zipPath -Force
+          }
+
+          Compress-Archive -Path (Join-Path $releaseDir "*") -DestinationPath $zipPath -CompressionLevel Optimal
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: |
+            main.js
+            manifest.json
+            styles.css
+            ${{ env.RELEASE_ZIP_NAME }}
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          files: |
+            main.js
+            manifest.json
+            styles.css
+            ${{ env.RELEASE_ZIP_NAME }}

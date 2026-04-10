@@ -1,5 +1,5 @@
 {
-  "name": "obsidian-gfm-compatibility",
+  "name": "gfm-compatibility",
   "version": "1.0.0",
   "description": "Obsidian plugin that adds GitHub style Markdown compatibility.",
   "main": "main.js",

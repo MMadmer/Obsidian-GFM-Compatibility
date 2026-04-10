@@ -18,7 +18,7 @@ if (shouldWatch)
 {
 	const context = await esbuild.context(buildOptions);
 	await context.watch();
-	console.log("[obsidian-gfm-compatibility] watching for changes");
+	console.log("[gfm-compatibility] watching for changes");
 }
 else
 {
